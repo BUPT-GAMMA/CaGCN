@@ -140,3 +140,10 @@ python CaGCN.py --model GAT --hidden 8 --dataset Pubmed --labelrate 60 --dropout
 python CaGCN.py --model GAT --hidden 8 --dataset CoraFull --labelrate 60 --dropout 0.6 --lr 0.005 --stage 2 --lr_for_cal 0.001 --l2_for_cal 0.03 --epoch_for_st 500 --threshold 0.95
 ```
 
+## More Parameters
+
+For more parameters of baselines, please refer to the Parameter.md
+
+## Contact
+
+If you have any questions, please feel free to contact me with liuhongrui@bupt.edu.cn
