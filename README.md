@@ -14,6 +14,7 @@ Paper Link: https://arxiv.org/abs/2109.14285
 - numpy == 1.20.2
 
 GPU: GeForce RTX 2080 Ti
+
 CPU: Intel(R) Xeon(R) Silver 4210 CPU @ 2.20GHz
 
 
