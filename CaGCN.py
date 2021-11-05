@@ -171,7 +171,7 @@ def generate_pesudo_label(output, idx_train, pseudo_labels, idx_test, idx_val):
     return idx_train, pseudo_labels
 
 
-def main(dataset, outfile, ece_file, nll_file, tv_file):
+def main(dataset):
     data, adj, features, labels, idx_train, idx_val, idx_test, nxg= load_data(dataset, args.labelrate)
     features = features.to(device)
     adj = adj.to(device)
@@ -244,37 +244,9 @@ def main(dataset, outfile, ece_file, nll_file, tv_file):
         acc_test_times_list.append(acc_test)
 
 
-
-        # write ece error and nll loss
-        ece_f, nll_f, brier_f = open(ece_file, mode='a+'), open(nll_file, mode='a+'), open(brier_file, mode='a+')
-        ece_f.write(str(ece) + ' ')
-        nll_f.write(str(loss_test.item()) + ' ')
-        brier_f.write(str(brier_score) + ' ')
-        brier_f.close()
-        ece_f.close()
-        nll_f.close()
-
-
-    with open(outfile, mode='a+') as f:
-        f.write('\n')
-        for i in acc_test_times_list:
-            f.write(str(i))
-            f.write(' ')
-
     print('acc_test:',acc_test_times_list)
 if __name__ == '__main__':
-    outfile = './output/result-%s-%s-%s-%d.txt'%(args.model, args.dataset, args.threshold, args.labelrate)
-    ece_file = './output/ours-ece-%s-%s-%d.txt' % (args.model, args.dataset, args.labelrate)
-    nll_file = './output/ours-nll-%s-%s-%d.txt' % (args.model, args.dataset, args.labelrate)
-    brier_file = './output/ours-brier-%s-%s-%d.txt' % (args.model, args.dataset, args.labelrate)
-    tv_file = './output/ours-tv-%s-%s-%d.txt' % (args.model, args.dataset, args.labelrate)
-    ece_f, nll_f, brier_f = open(ece_file, 'w'), open(nll_file, 'w'), open(brier_file, 'w')
-    ece_f.close()
-    nll_f.close()
-    brier_f.close()
-    file = open(outfile, mode='w')
-    file.close()
-    main(dataset=args.dataset, outfile=outfile, ece_file = ece_file, nll_file = nll_file, tv_file = tv_file)
+    main(dataset=args.dataset)
 
 
 
