@@ -15,7 +15,7 @@ result = []
 # Training settings
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', type=str, default='GCN')
-parser.add_argument('--dataset', type=str, default="Cora",
+parser.add_argument('--dataset', type=str, default="CoraFull",
                     help='dataset for training')
 parser.add_argument('--stage', type=int, default=1,
                     help='times of retraining')
@@ -34,7 +34,7 @@ parser.add_argument('--hidden', type=int, default=64,
                     help='Number of hidden units.')
 parser.add_argument('--dropout', type=float, default=0.5,
                     help='Dropout rate (1 - keep probability).')
-parser.add_argument('--labelrate', type=int, default=20)
+parser.add_argument('--labelrate', type=int, default=60)
 parser.add_argument('--n_bins', type=int, default=20)
 parser.add_argument('--Lambda', type=float, default=0.5,
                     help='the weight for ranking loss')
@@ -62,9 +62,11 @@ def train(epoch, model, optimizer, adj, features,labels, idx_train, idx_val, idx
     ece_criterion = _ECELoss(args.n_bins).cuda()
     ece = ece_criterion(output[idx_train], labels[idx_train])
 
-    loss_train = criterion(output[idx_train], labels[idx_train]) + \
-                    args.Lambda * intra_distance_loss(output[idx_train], labels[idx_train])
-
+    if not sign:
+        loss_train = criterion(output[idx_train], labels[idx_train])
+    else:
+        loss_train = criterion(output[idx_train], labels[idx_train]) + \
+                     args.Lambda * intra_distance_loss(output[idx_train], labels[idx_train])
 
     acc_train = accuracy(output[idx_train], labels[idx_train])
     loss_train.backward()
